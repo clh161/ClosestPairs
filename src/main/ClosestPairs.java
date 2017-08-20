@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -10,13 +11,7 @@ public class ClosestPairs {
         if (coordinates.size() < 3)
             return bruteForceMinDistance(coordinates);
         else {
-            coordinates.sort((o1, o2) -> {
-                if (o1.x < o2.x)
-                    return -1;
-                if (o1.x > o2.x)
-                    return 1;
-                return 0;
-            });
+            coordinates.sort(new XComparator());
             int mid = coordinates.size() / 2;
             List<Coordinate> coordinates1 = coordinates.subList(0, mid);
             List<Coordinate> coordinates2 = coordinates.subList(mid, coordinates.size());
@@ -27,13 +22,7 @@ public class ClosestPairs {
             for (Coordinate coordinate : coordinates)
                 if (Math.abs(coordinates.get(mid).x - coordinate.x) < minD)
                     strips.add(coordinate);
-            strips.sort((o1, o2) -> {
-                if (o1.y < o2.y)
-                    return -1;
-                if (o1.y > o2.y)
-                    return 1;
-                return 0;
-            });
+            strips.sort(new YComparator());
             for (int i = 0; i < strips.size(); i++) {
                 for (int j = i + 1; j < strips.size() && strips.get(j).y - strips.get(i).y < minD; j++) {
                     double d = distance(strips.get(i), strips.get(j));
@@ -63,4 +52,27 @@ public class ClosestPairs {
         return Math.sqrt(Math.pow((a.x - b.x), 2) + Math.pow((a.y - b.y), 2));
     }
 
+    private static class XComparator implements Comparator<Coordinate> {
+
+        @Override
+        public int compare(Coordinate o1, Coordinate o2) {
+            if (o1.x < o2.x)
+                return -1;
+            if (o1.x > o2.x)
+                return 1;
+            return 0;
+        }
+    }
+
+    private static class YComparator implements Comparator<Coordinate> {
+
+        @Override
+        public int compare(Coordinate o1, Coordinate o2) {
+            if (o1.y < o2.y)
+                return -1;
+            if (o1.y > o2.y)
+                return 1;
+            return 0;
+        }
+    }
 }
