@@ -7,10 +7,8 @@ import java.util.List;
 public class ClosestPairs {
 
     public static double minDistance(List<Coordinate> coordinates) {
-        if (coordinates.size() < 2)
-            return Float.MAX_VALUE;
-        else if (coordinates.size() == 2)
-            return distance(coordinates.get(0), coordinates.get(1));
+        if (coordinates.size() < 3)
+            return bruteForceMinDistance(coordinates);
         else {
             coordinates.sort((o1, o2) -> {
                 if (o1.x < o2.x)
