@@ -8,15 +8,20 @@ import java.util.List;
 public class ClosestPairs {
 
     public static double minDistance(List<Coordinate> coordinates) {
+        return minDistance(coordinates, true);
+    }
+
+    private static double minDistance(List<Coordinate> coordinates, boolean sortX) {
         if (coordinates.size() < 3)
             return bruteForceMinDistance(coordinates);
         else {
-            coordinates.sort(new XComparator());
+            if (sortX)
+                coordinates.sort(new XComparator());
             int mid = coordinates.size() / 2;
             List<Coordinate> coordinates1 = coordinates.subList(0, mid);
             List<Coordinate> coordinates2 = coordinates.subList(mid, coordinates.size());
-            double d1 = minDistance(coordinates1);
-            double d2 = minDistance(coordinates2);
+            double d1 = minDistance(coordinates1, false);
+            double d2 = minDistance(coordinates2, false);
             double minD = Math.min(d1, d2);
             ArrayList<Coordinate> strips = new ArrayList<>();
             for (Coordinate coordinate : coordinates)
